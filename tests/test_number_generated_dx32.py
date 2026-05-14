@@ -1,34 +1,34 @@
 # -*- coding: utf-8 -*-
 
 from nextrngbook import dx_generator
-from nextrngbook.dx_generator import create_dx, get_dx_max_id
+from nextrngbook.dx_generator import DX32, get_dx32_max_id
 import numpy as np
 import pandas as pd
 from numpy.random import Generator, randint
 import pytest
 import os
 
-# prepare _DXGenerator objects
+# prepare _DX32Generator objects
 dx_data_path = os.path.join(os.path.dirname(dx_generator.__file__), "data", "dx32_parameters.csv")
 dx_data = pd.read_csv(dx_data_path)
 dx_k_1 = dx_data[dx_data["ss"] == 1]
 dx_k_2 = dx_data[dx_data["ss"] == 2]
 
 ## Default and Boundary Testing (#7)
-default_dx32 = create_dx()
+default_dx32 = DX32()
 
-largest_kk_1 = create_dx(dx_k_1.iloc[dx_k_1["kk"].argmax()]["dx_id"])
-largest_kk_2 = create_dx(dx_k_2.iloc[dx_k_2["kk"].argmax()]["dx_id"])
+largest_kk_1 = DX32(dx_k_1.iloc[dx_k_1["kk"].argmax()]["dx_id"])
+largest_kk_2 = DX32(dx_k_2.iloc[dx_k_2["kk"].argmax()]["dx_id"])
 
-largest_bb_1 = create_dx(dx_k_1.iloc[dx_k_1["bb"].argmax()]["dx_id"])
-largest_bb_2 = create_dx(dx_k_2.iloc[dx_k_2["bb"].argmax()]["dx_id"])
+largest_bb_1 = DX32(dx_k_1.iloc[dx_k_1["bb"].argmax()]["dx_id"])
+largest_bb_2 = DX32(dx_k_2.iloc[dx_k_2["bb"].argmax()]["dx_id"])
 
-largest_pp_1 = create_dx(dx_k_1.iloc[dx_k_1["pp"].argmax()]["dx_id"])
-largest_pp_2 = create_dx(dx_k_2.iloc[dx_k_2["pp"].argmax()]["dx_id"])
+largest_pp_1 = DX32(dx_k_1.iloc[dx_k_1["pp"].argmax()]["dx_id"])
+largest_pp_2 = DX32(dx_k_2.iloc[dx_k_2["pp"].argmax()]["dx_id"])
 
 ## Random testing (#3)
-current_max_dx32_id = get_dx_max_id()
-rand_t_1, rand_t_2, rand_t_3 = [create_dx(randint(0, current_max_dx32_id + 1)) for _ in range(3)]
+current_max_dx32_id = get_dx32_max_id()
+rand_t_1, rand_t_2, rand_t_3 = [DX32(randint(0, current_max_dx32_id + 1)) for _ in range(3)]
 
 dx32_test_data = [default_dx32, largest_kk_1, largest_kk_2, 
                   largest_bb_1, largest_bb_2, largest_pp_1,
