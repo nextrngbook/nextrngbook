@@ -10,7 +10,9 @@ plugins:
   
 nav:
   - Home: index.md
-  - Quick Start: quick_start.md
+  - Quick Start: 
+      - DX generator: dx_quick_start.md
+      - DX32 generator: dx32_quick_start.md
   - API Reference:
       - Overview: reference.md
       - dx_generator: dx_generator.md

@@ -1,3 +1,8 @@
+# Team and Contributors
+
+This page lists the current maintainer, past developer, and theoretical advisors
+of the NextRNGBook project.
+
 ## Current Developer and Maintainer
 
 * Meng-Xun Cai - [GitHub](https://github.com/jerry263104)

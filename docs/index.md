@@ -1,5 +1,176 @@
 # NextRNGBook: A Python Random Number Generation Package for RNG Book
 
+## New Update
+
+We introduce a new faster DX generator API, `DX()`, which produces 32-bit random integers. 
+At the same time, the previously released API `create_dx()` has been renamed to `DX32()` to provide a cleaner and more consistent interface.
+
+The `DX()` API is the recommended 32-bit pseudo-random number generator in this package. 
+Its integer generation speed is close to PCG64 and comparable to MT19937 in our benchmark results. 
+This naming scheme also leaves room for future extensions such as `DX64()` and `DX128()`, allowing generators with different output bit-widths to be distinguished more naturally.
+
+In `DX()`, the parameter $p$ is fixed at $2^{31} - 1$ in order to accelerate the modular reduction step [[10]](#references). 
+However, this restriction does not reduce the number of distinct DX generators available in the package. 
+Users who do not want to use DX generators with fixed $p = 2^{31} - 1$ can instead use `DX32()`.
+
+For generating $U(0,1)$ random numbers, `DX()` is also slightly faster than MT19937 in our benchmark results. 
+The tables below compare the generation speed of different RNGs.
+
+For large-scale parallel computing, the DX generator provides a large number of distinct parameter sets. 
+Different **dx_id** values in `DX()` correspond to distinct parameterized generators rather than jumped positions within a single cycle. 
+They also correspond to different period lengths, allowing users to choose generators with periods ranging from approximately $10^{28}$ to $10^{195009.3}$. 
+In addition, the parameter $k$ in `DX()` ranges from $3$ to $20897$, providing users with a wide spectrum of generator configurations. 
+The longest available DX generator has a substantially longer period than both PCG64 and MT19937.
+
+### Overview: Comparison of PCG64, MT19937, and the DX Generator
+
+The main generator currently provided in this package is the **DX generator**. Here we compare it with two widely used generators, **PCG64** and **MT19937**.
+
+PCG64 is a modern RNG with strong practical performance and fast output generation [[11]](#references). MT19937 is the classical Mersenne Twister, well known for its long period and extensive use in simulation and scientific computing [[13]](#references). The DX generator is a family of multiple recursive generators (MRGs) with flexible parameterization, very long periods, and strong equidistribution properties [[1]](#references).
+
+The following sections compare these generators in terms of **speed**, **period**, **parallelization**, **flexibility and portability**, **equidistribution**, and **empirical testing with TestU01**.
+
+### Speed Benchmark
+
+Use `random_raw()` function to generator $10^{9}$ 32 bit integers, repeating the experiment 100 times. The table shows the average runtime of different generators.
+
+| RNG | Mean (s) | Median (s) | Standard Deviation |
+|---|---|---|---|
+| PCG64 | 2.1601 | 2.1131 | 0.0730 |
+| MT19937 | 3.6113 | 3.6091 | 0.0777 |
+| DX | 3.8937 | 3.8819 | 0.1319 |
+
+Use `numpy.random.Generator` function to generator $10^{9}$ U(0, 1) numbers, repeating the experiment 100 times. The table shows the average runtime of different generators.
+
+| RNG | Mean (s) | Median (s) | Standard Deviation |
+|---|---|---|---|
+| PCG64 | 12.7781 | 12.7185 | 0.8338 |
+| MT19937 | 18.2524 | 18.2670 | 1.1520 |
+| DX | 13.5349 | 13.4070 | 1.0766 |
+
+These benchmarks measure only the raw time required to generate random numbers.
+
+As shown in the first table, PCG64 is the fastest, followed by MT19937, while the DX generator is the slowest. In the second table, PCG64 is still the fastest, followed by the DX generator, with MT19937 being the slowest.
+
+The main reason is the difference in how the outputs are produced. PCG64 and MT19937 generate 32-bit random numbers directly. In contrast, the DX generator first updates its internal state, then converts the result to a value in $(0,1)$ by dividing by the modulus $p$, and finally maps it to the 32-bit integer range by multiplying by $2^{32}$. These extra steps make the DX generator slightly slower than MT19937 in the first benchmark, while it remains faster than MT19937 in the second benchmark.
+
+In practical simulation studies, random number generation is usually only one component of a larger workflow. For example, when generating normal random variables using the Box–Muller transformation, much of the computation time is spent on the transformation itself rather than on producing the underlying $U(0,1)$ random numbers. Therefore, small differences in raw generation speed do not necessarily translate into large differences in total runtime. In many applications, the statistical quality of the generated random numbers is more important than raw speed alone.
+
+!!! Note
+    All timings were taken using Windows 10 on an Intel Core i5-8250 processor.
+
+
+### Period Length
+
+Period length is one of the key properties used to evaluate the quality of a random number generator (RNG). It refers to the number of generated values before the sequence starts repeating itself. In other words, once an RNG returns to the same state and begins producing the same sequence again, the number of generated values in that cycle is called its period. A good RNG should ideally have a sufficiently long period.
+
+For the well-known PCG64, the generator is based on a 128-bit Linear Congruential Generator (LCG) and outputs 64-bit integers. Its period is $2^{128} \approx 10^{38.5}$. If the period of PCG64 is considered insufficient for a specific application, it can be extended by using the extension array technique [[1]](#references). However, this extension comes at the cost of additional computation time.
+
+The DX generator is a class of Multiple Recursive Generators (MRGs), and its period can be expressed as $p^{k} - 1$, where $p$ is the modulus and $k$ is the order of the recurrence, that is, the number of previous values stored and used to generate the next one [[3]](#references). In the current package, the largest available DX generator can reach approximately $10^{195009.3}$ in period length.
+
+Unlike PCG64, whose period can be enlarged by using an extension array with additional computational cost, the DX generator can achieve a much longer period simply by increasing the value of $k$. In practice, increasing $k$ mainly increases the amount of memory required to store previous states, but does not necessarily lead to a substantial increase in generation time. This gives users a flexible way to choose an appropriate DX generator according to the trade-off between period length and memory usage.
+
+Among these generators, PCG64 has the shortest period, followed by MT19937 with period $2^{19937} - 1 \approx 10^{6001}$ [[13]](#references), while the DX generator has the longest period overall. Therefore, the DX generator currently provides a very wide range of period lengths, and users can choose an appropriate value of $k$ based on the memory available and the period required for their applications. Moreover, the set of DX generator parameters currently included in the package is not yet exhaustive, and more parameter combinations can be found through further algorithmic search.
+
+
+### Parallelization
+
+PCG64 can be used for parallel applications by creating multiple distinct streams.  
+In the PCG framework, streams are mainly obtained by changing the **increment** of the underlying LCG [[17]](#references). According to the PCG discussion, these streams are intended to be **distinct and useful**, but they should not be interpreted as being strictly statistically independent [[15]](#references).
+
+In practice, NumPy users usually use `spawn()` to create multiple PCG64 generators.  
+Another option is **jump-ahead**, which moves the state forward by a large number of steps so that different generators start at distant positions in the same cycle.
+
+For MT19937, jump-ahead can in principle be implemented through repeated multiplication of the transition matrix. In practice, this is not used directly because the matrix is too large. Instead, modern implementations rely on the characteristic polynomial and its corresponding jump polynomial [[13]](#references). NumPy follows this latter approach. Although effective, this [method](https://numpy.org/doc/2.2/reference/random/bit_generators/generated/numpy.random.MT19937.jumped.html) is mathematically and computationally more complicated.
+
+The DX generator can also be parallelized through jump-ahead in principle [[1]](#references). 
+However, in the current package, parallelization is achieved by selecting different **dx_id** values, each corresponding to a different RNG.
+Unlike jump-ahead, where generators are taken from different positions of the same cycle, different `dx_id` values correspond to different cycles. As a result, this approach avoids the risk of overlapping sequences and is also much simpler to implement in practice.
+
+In parallel settings, PCG64 and MT19937 rely on stream spawning or jump-ahead methods to produce multiple usable substreams. These methods are practical, but they still derive streams within the same generator family. For PCG64 streams, even the PCG discussion notes that such streams are distinct and useful rather than strictly statistically independent. By contrast, the DX generator supports parallelization more directly. Users only need different dx_id values to obtain RNGs with different parameter sets, making large-scale parallel use simpler and more transparent.
+
+
+### Flexibility and Portability
+
+The [PCG family](https://www.pcg-random.org/using-pcg-c.html) provides random number generators with multiple output sizes, including 8-, 16-, 32-, and 64-bit variants. For example, PCG64 uses a 128-bit linear congruential generator (LCG) to update its internal state and produces 64-bit random numbers as output.
+
+From a strict hardware perspective, this does not necessarily mean that the LCG update is performed as a native 128-bit integer operation. Most mainstream processors do not execute a full 128-bit LCG state update as a single scalar integer instruction. Instead, the 128-bit update is usually decomposed into multiple lower-width operations, commonly using 64-bit arithmetic.
+
+Therefore, PCG64 remains portable across systems, but its performance may depend on how efficiently the compiler and platform implement the required 128-bit arithmetic. Implementations of PCG are available in multiple programming languages. 
+
+MT19937 is a 32-bit random number generator and is one of the default random number generators in [R](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Random.html). A 64-bit variant, MT19937-64 [[14]](#references), is also available. Because Mersenne Twister has been widely used for many years, stable implementations can be found across different operating systems and programming languages.
+
+The current version of our DX generator package mainly provides a 32-bit implementation. However, from an algorithmic point of view, the DX generator can also be extended to 64-bit and 128-bit versions[[16]](#references). This gives it the potential to be applied across different operating systems and programming languages as well.
+
+
+### Equidistribution
+
+Equidistribution describes whether an RNG can provide different possible outputs with nearly equal frequency over a long sequence.
+If an RNG has this property, then in sufficiently many generated vales, different outcomes will appear with approximately the same frequency.  
+
+#### Definition 
+
+Suppose a RNG generates the sequence $X_{-k}, \dots, X_{-1}, X_{0}, X_{1}, \dots$ where $X_{i} \in \mathbb{Z}_{p}$, and
+let its period be $r$. The RNG is said to be equidistributed in t dimensions, if the following property holds true for every $1 \leq d \leq t$: Consider all $r$ possible distinct $d$-tuples of successive elements from $i$, i.e., $(X_{i}, \dots, X_{i+d-1}), (X_{i+1}, \dots, X_{i+d}), \dots, (X_{i+r-1}, \dots, X_{i+r+d-2}).$
+Then, amongst them all the possible $P^{t}$ tuples will occur with almost equal frequency. [[1]](#references)
+
+The equidistribution property of PCG64 is not explicitly stated on its official website, and the upper limit depends on the specific construction being used. For the PCG64 currently provided in NumPy, whose period is $2^{128}$, the theoretical upper bound implied by the definition of equidistribution is $4$. As mentioned earlier, the extension array technique can be used to increase the equidistribution dimention.
+
+MT19937 is 623-dimensionally equidistributed at 32-bit accuracy [[13]](#references).
+For the DX generator, the equidistribution dimension is determined by the order $k$ of the underlying MRG. [[3]](#references)
+
+Based on the discussion above, PCG64 has the lowest equidistribution dimension among the three generators, followed by MT19937. For the parameter sets currently provided in this package, the DX generator can achieve the upper limit of 20897-dimensional equidistribution. This indicates that, in terms of high-dimensional equidistribution, the DX generator performs best among the three RNGs.
+
+
+### Empirical Test: TestU01 Results
+
+TestU01 [[9]](#references) is a widely used empirical test suite for random number generators, designed to detect statistical bias, correlation, and other structural defects in generated sequences. In this empirical comparison, we use **PCG32** instead of **PCG64** so that all generators are evaluated on the same 32-bit output basis. This makes the comparison with **MT19937**, **DX-k-1**, and **DX-k-2** more consistent and fair. We compare the performance of PCG32, MT19937, and the DX generator under the Crush battery.
+
+For this experiment, we applied the TestU01 Crush battery to **PCG32**, **MT19937**, **DX-k-1**, and **DX-k-2**.
+
+For **PCG32** and **MT19937**, we used seeds from 1234 to 1258, resulting in 25 independent Crush runs for each generator. Since the Crush battery reports 144 test statistics, each of these generators produced $144 \times 25$ p-values in total.
+
+For **DX-k-1** and **DX-k-2**, we also performed 25 Crush runs for each generator class. These two classes correspond to the two recurrence structures of the DX generator family described in the [DX generator section](#dx-generators-a-class-of-efficient-mrgs). In each class, we selected 25 different values of $k$, each paired with a corresponding multiplier $B$. The detailed parameter settings are listed below.
+
+To summarize the empirical results, we recorded the proportions of p-values falling into several extreme ranges. An RNG is considered to perform well if these observed proportions are close to the theoretical proportions expected under a uniform distribution.
+
+
+| p-value | $<10^{-4}$ | $<10^{-3}$ | $>1-10^{-3}$ | $>1-10^{-4}$ | $>1-10^{-5}$ |
+|---|---:|---:|---:|---:|---:|
+| **PCG32** |
+| Proportion | 0.000278 | 0.000556 | 0.001111 | 0 | 0 |
+| **MT19937** |
+| Proportion | 0.000278 | 0.001389 | 0.014722 | 0.013889 | 0.013889 |
+| **DX-k-1** |
+| Proportion | 0 | 0.002222 | 0.000556 | 0 | 0 |
+| **DX-k-2** |
+| Proportion | 0.000278 |	0.001111 | 0.000556 |	0.000278 | 0 |
+
+The detailed $(k, B)$ pairs used for **DX-k-1** and **DX-k-2** are listed below. Since DX generators with $k=2$ showed relatively poor performance in the Crush tests, they are currently excluded from the provided parameter set.
+
+??? info "Parameter settings used in the Crush tests"
+    **DX-k-1**
+    
+    ```text
+    (3, 523793), (4, 1048274), (5, 524251), (20, 1045152), (21, 1045311),
+    (22, 523411), (23, 1046670), (24, 521749), (26, 1044443), (27, 523797),
+    (30, 1043894), (34, 524043), (39, 522706), (42, 1044205), (47, 2096778),
+    (48, 1040215), (51, 521799), (52, 523729), (60, 1037046), (102, 1042679),
+    (120, 1028648), (643, 4178499), (1597, 918398), (7499, 876798), (20897, 900942)
+    ```
+
+    **DX-k-2**
+    
+    ```text
+    (3, 524055), (4, 1048421), (5, 523992), (20, 1044873), (21, 1045412),
+    (22, 522821), (23, 1046205), (24, 522948), (26, 1044091), (27, 520325),
+    (30, 519311), (34, 1044586), (39, 1044247), (42, 521662), (47, 99565),
+    (48, 1044752), (51, 519906), (52, 1047593), (60, 519980), (102, 1037411),
+    (120, 522191), (643, 201330), (1597, 893161), (7499, 768842), (20897, 1028880)
+    ```
+
+The results show that **PCG32**, **DX-k-1**, and **DX-k-2** all perform stably overall, with observed proportions that are broadly consistent with the theoretical values expected under uniformity. In particular, the two DX classes show competitive empirical performance in comparison with PCG32. By contrast, **MT19937** produces noticeably larger proportions in the small-p-value region, suggesting weaker performance under this set of Crush tests. Overall, the DX generators considered here compare favorably with both PCG32 and MT19937 in this empirical study.
+
 ## Introduction
 
 The goal of **NextRNGBook** package is to incorporate a variety of high-quality random number 
@@ -8,7 +179,7 @@ generators (RNGs) from
 Designed for seamless compatibility with **NumPy**, 
 this Python package can integrate easily into existing workflows, 
 offering a wide range of selections from state-of-the-art random number generation techniques 
-suitable for scientific computing, large-scale simulations, and cryptographic applications.
+suitable for scientific computing, large-scale simulations, reinforcement learning, and cryptographic applications.
 
 The goal of designing high-quality random number generators is to produce variates 
 that behave like truly random numbers. 
@@ -16,13 +187,11 @@ This means the generated variates can cover the space evenly over high dimension
 and do not repeat for a very long time. 
 They can be generated efficiently across different systems, 
 and they can pass a wide range of statistical tests that detect hidden patterns. 
-A good RNG should perform reliably for large-scale simulations with 
-a strong support for parallel computing, 
-and an easy integration across various computing platforms. 
+A good RNG should perform reliably for large-scale simulations with strong support for parallel computing, easy integration across various computing platforms, and sufficient statistical quality for applications such as reinforcement learning, where randomness can affect exploration behavior, training stability, and the reproducibility of empirical evaluation [[18, 19, 20]](#references).
 For security applications,  generated variates need to be unpredictable, 
 so that future values cannot be inferred from past outputs.
 
-There are several  high-quality RNGs to be implemented in this NextRNGBook Package which should provide a solid foundation 
+There are several high-quality RNGs to be implemented in this NextRNGBook Package which should provide a solid foundation 
 for better statistical simulation and/or secure applications. 
 Combining strong theoretical supports and great practical performance, 
 NextRNGBook can help users to explore, evaluate, and 
@@ -407,7 +576,7 @@ NextRNGBook will also include the **64-bit** RNGs version of various
 
 ## Learn More
 
-- **[Quick Start](quick_start.md)** – Learn how to install and use NextRNGBook.
+- **[Quick Start](dx32_quick_start.md)** – Learn how to install and use NextRNGBook.
 - **[API Reference](reference.md)** – API documentation.
 - **[Explanation](team_and_contributor.md)** – Background, design principles, and team members. 
   *Under construction. Currently lists team members only.*
@@ -452,3 +621,45 @@ Addison-Wesley.
 [8] Lidl, R., and Niederreiter, H. (1994). 
 *Introduction to Finite Fields and Their Applications  . Revised Edition*. 
 Cambridge University Press, Cambridge, MA.
+
+[9] L’Ecuyer, P., & Simard, R. (2007). 
+*TestU01: A C library for empirical testing of random number generators*. 
+ACM Transactions on Mathematical Software (TOMS), 33(4), 1–40.
+
+[10] Crandall, R. E. (1992). 
+*Method and apparatus for fast modular multiplication and division*. 
+U.S. Patent No. 5,159,632.
+
+[11] O’Neill, M. E. (2014). 
+*PCG: A family of simple fast space-efficient statistically good algorithms for random number generation*. 
+ACM Transactions on Mathematical Software.
+
+[12] L’Ecuyer, P. (1999). 
+*Tables of linear congruential generators of different sizes and good lattice structure*. 
+Mathematics of Computation, 68(225), 249–260.
+
+[13] Matsumoto, M., & Nishimura, T. (1998). 
+*Mersenne Twister: A 623-dimensionally equidistributed uniform pseudorandom number generator*. 
+ACM Transactions on Modeling and Computer Simulation (TOMACS), 8(1), 3–30.
+
+[14] Nishimura, T. (2000). 
+*Tables of 64-bit Mersenne Twisters*. 
+ACM Transactions on Modeling and Computer Simulation (TOMACS), 10(4), 348–357.
+
+[15] O'Neill, M. E. *Response to Vigna's critique of PCG streams*.  
+[https://www.pcg-random.org/posts/on-vignas-pcg-critique.html](https://www.pcg-random.org/posts/on-vignas-pcg-critique.html)
+
+[16] Deng, L. Y., Lu, H. H. S., & Chen, T. B. (2010). 
+64-Bit and 128-bit DX random number generators. Computing, 89(1), 27-43.
+
+[17] O'Neill, M. E. *Critiquing PCG's streams (and SplitMix's too)*.
+[https://www.pcg-random.org/posts/critiquing-pcg-streams.html](https://www.pcg-random.org/posts/critiquing-pcg-streams.html)
+
+[18] Henderson, P., Islam, R., Bachman, P., Pineau, J., Precup, D., & Meger, D. (2018, April). 
+Deep reinforcement learning that matters. In Proceedings of the AAAI conference on artificial intelligence (Vol. 32, No. 1).
+
+[19] Islam, R., Henderson, P., Gomrokchi, M., & Precup, D. (2017). 
+Reproducibility of benchmarked deep reinforcement learning tasks for continuous control. arXiv preprint arXiv:1708.04133.
+
+[20] Fortunato, M., Azar, M. G., Piot, B., Menick, J., Osband, I., Graves, A., ... & Legg, S. (2017). 
+Noisy networks for exploration. arXiv 2017. arXiv preprint arXiv:1706.10295.

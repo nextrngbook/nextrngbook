@@ -28,6 +28,14 @@ Combining strong theoretical supports and great practical performance,
 NextRNGBook can help users to explore, evaluate, and 
 apply high-quality RNGs in a modern Python environment.
 
+## Current APIs
+
+NextRNGBook currently provides two DX generator interfaces:
+
+- `DX()`: the recommended fast 32-bit DX generator.
+- `DX32()`: a more general 32-bit DX generator family with broader parameter choices.
+
+Both APIs are compatible with NumPy's `Generator` interface.
 
 ## Documentation & Distribution
 

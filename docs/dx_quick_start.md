@@ -22,37 +22,36 @@ matrices, and distributions.
 
 ```python
 
-from nextrngbook.dx_generator import create_dx
+from nextrngbook.dx_generator import DX
 from numpy.random import Generator
 
 ``` 
 
 ## Create DX generators
 
-NextRNGBook provides the `create_dx` function to initialize a specific DX generator 
-from the DX generator family, which includes over 4,000 built-in DX generators. 
+NextRNGBook provides the `DX` function to initialize a specific DX generator 
+from the DX generator family, which includes over 10,000 built-in DX generators. 
 By calling this function, you can create an instance of a 32-bit 
 DX generator that can be used for further operations.
 
 ```python
 
->>> create_dx()
-_DXGenerator(bb=1016882, pp=2146123787, kk=50873, ss=2, log10_period=474729.3125)
+>>> DX()
+_DXGenerator(bb=24184, pp=2147483647, kk=47, ss=2, log10_period=438.6000061035156)
 
-``` 
+```
 
-`create_dx(dx_id, seed)` takes two parameters:
+`DX(dx_id, seed)` takes two parameters:
 
-- dx_id: Selects a specific DX generator from the DX generator family (over 4,000 options).
+- dx_id: Selects a specific DX generator from the DX generator family (over 10,000 options).
 - seed: Sets the RNG state for reproducibility, provided that the seed is not `None`.
-
 
 ```python
 
->>> create_dx(dx_id=4000, seed=101)
-_DXGenerator(bb=1046381, pp=2147472413, kk=1301, ss=2, log10_period=12140.7998046875)
+>>> DX(dx_id=10000, seed=308)
+_DXGenerator(bb=646323, pp=2147483647, kk=47, ss=2, log10_period=438.6000061035156)
 
-``` 
+```
 
 In short, `dx_id` determines the specific DX generator, 
 and `seed` ensures reproducibility.
@@ -66,25 +65,25 @@ To obtain information about the created DX generator, you can print it out.
 
 ```python
 
-dx_rng = create_dx(dx_id=3999)
-print(dx_rng)
+rng = DX(dx_id=9999)
+print(rng)
 
 ``` 
 
-    DX-1301-2 generator
-    Multiplier = 1073694173
-    Modulus    = 2146412747
-    The log₁₀(period) of the PRNG is 12140.6
+    DX-47-2 generator
+    Multiplier = 646173
+    Modulus    = 2147483647
+    The log₁₀(period) of the PRNG is 438.6
 
 ## Use NumPy's Generator class with DX generator
 
-After creating a DX generator with `create_dx()`, you can easily connect it to 
+After creating a DX generator with `DX()`, you can easily connect it to 
 NumPy's `Generator` class.
 
 ```python
 
->>> dx = Generator(dx_rng)
->>> dx
+>>> rng = Generator(rng)
+>>> rng
 Generator(_DXGenerator) at ...
 
 ``` 
@@ -106,28 +105,28 @@ Here are some examples of generating random numbers using NumPy’s
 ```python
 
 # sampling from distributions
-print(dx.normal(0, 1, 20)) # generate twenty N(0, 1) data
-print(dx.uniform(0, 1, 10)) # generate ten U(0, 1) data
+print(rng.normal(0, 1, 20)) # generate twenty N(0, 1) data
+print(rng.uniform(0, 1, 10)) # generate ten U(0, 1) data
 
 # randomly choose
-print(dx.choice(["A", "B", "C", "D", "E"], size=30)) # choose thirty elements with replacement
+print(rng.choice(["A", "B", "C", "D", "E"], size=30)) # choose thirty elements with replacement
 
 # randomly shuffle
 sample_lst = ["A", "B", "C", "D", "E"]
-dx.shuffle(sample_lst)
+rng.shuffle(sample_lst)
 print(sample_lst)
 
 ``` 
 
-    [-0.00213944 -0.16430093  0.31275819  0.46733231 -1.66207846  1.46714534
-     -0.26847522 -0.75476158  0.05660134  0.17005816 -1.23263801  1.05619617
-      1.58009983  0.35782657 -0.39891161  0.89384609  0.80806737 -1.01287135
-     -0.42067584 -0.89925814]
-    [0.69362038 0.26363807 0.67196451 0.76542885 0.69339551 0.90578292
-     0.32005051 0.60380831 0.01674061 0.94753803]
-    ['B' 'E' 'B' 'B' 'D' 'A' 'A' 'A' 'D' 'D' 'C' 'E' 'E' 'B' 'B' 'A' 'D' 'A'
-     'B' 'D' 'D' 'C' 'A' 'A' 'E' 'A' 'E' 'E' 'B' 'D']
-    ['C', 'A', 'D', 'E', 'B']
+    [ 1.85811761  1.51038657 -0.46972854  2.54010018  1.3581735  -0.19969388
+    -0.76451271  0.19767763 -0.80287183 -0.45321281  1.30631922  1.62328021        
+    -0.87913752 -0.25868414 -0.47459769 -0.11657998  1.16520699 -0.08221444        
+    0.72956116 -0.80021773]
+    [0.49784149 0.08103851 0.51156899 0.31261863 0.0444274  0.35562973
+    0.90995614 0.64610098 0.69553556 0.1983629 ]
+    ['D' 'B' 'B' 'A' 'A' 'A' 'E' 'C' 'D' 'E' 'C' 'D' 'E' 'E' 'B' 'D' 'B' 'B'        
+    'B' 'A' 'E' 'D' 'E' 'B' 'B' 'D' 'E' 'B' 'A' 'B']
+    ['A', 'E', 'C', 'D', 'B']
 
 
 ## Parallel random number generation
@@ -139,11 +138,11 @@ reducing dependencies between random sequences in parallel processes.
 
 ```python
 
-from nextrngbook.dx_generator import create_dx
+from nextrngbook.dx_generator import DX
 from numpy.random import Generator
 
 # Create multiple DX generators with different dx_id values
-generators = [Generator(create_dx(dx_id=i)) for i in range(4100, 4108)]
+generators = [Generator(DX(dx_id=i)) for i in range(14760, 14769)]
 
 ``` 
 

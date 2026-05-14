@@ -9,7 +9,7 @@ import numpy as np
 
 extensions = [
     Extension(
-        "nextrngbook.dx_generator._dx_generator32",
+        "nextrngbook.dx_generator._dx_generator32", 
         sources=[
             os.path.join("src", "nextrngbook", "dx_generator", "_dx_generator32.pyx"), 
             os.path.join("src", "nextrngbook", "dx_generator", "src", "dx_k_s_32.c")
@@ -18,8 +18,8 @@ extensions = [
             np.get_include(),
             os.path.join(os.path.dirname(__file__), "src", "nextrngbook", "dx_generator", "src")
         ],
-        define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")]
-    )
+        define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")],
+    ),
 ]
 
 setup(
