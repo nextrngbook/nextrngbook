@@ -33,6 +33,22 @@
  * See the LICENSE file in the project root for more information.
  */
 
+/*
+ * Update note (DX fast):
+ *   The dx_k_*_fast_* functions were updated to provide a fast path for specific DX generator
+ *   parameter p = 2^31 - 1. DX fast avoids (%) by using MOD_fast() and returns the
+ *   updated state value directly (instead of mapping via double * 2^32).
+ *
+ * The dx_fast update was carried out by Meng-Xun Cai, 2026,
+ * with theoretical guidance and suggestions from Prof. Lih-Yuan Deng <lihdeng@memphis.edu>, 
+ * Prof. Henry Horng-Shing Lu <henryhslu@nycu.edu.tw>, and Prof. Ching-Chi Yang <cyang3@memphis.edu>.
+ * 
+ * Copyright (c) 2026 Meng-Xun Cai <rr991370@gmail.com>
+ * 
+ * This code is licensed under the MIT License. 
+ * See the LICENSE file in the project root for more information.
+ */
+
 
 #include "dx_k_s_32.h"
 #include <stdio.h>
@@ -93,15 +109,57 @@ void dx_k_2(dx_k_s_32_state *state){
     return;
 }
 
+void dx_k_1_fast(dx_k_s_32_state *state){
+
+    int II0 = state->II;
+
+    // wrap around running index
+    if (++state->II == state->kk) {
+        state->II = 0;
+    }
+
+    state->XX[state->II] = (uint32_t) MOD_fast(state->bb * (uint64_t) state->XX[state->II] + 
+                                                       state->XX[II0]);
+
+    return;
+}
+
+void dx_k_2_fast(dx_k_s_32_state *state){
+
+    int II0 = state->II;
+
+    // wrap around running index
+    if (++state->II == state->kk) {
+        state->II = 0;
+    }
+
+    state->XX[state->II] = (uint32_t) MOD_fast(state->bb * (state->XX[state->II] +
+                                        (uint64_t) state->XX[II0]));
+
+    return;
+}
+
 
 extern inline uint32_t dx_k_1_next32(dx_k_s_32_state *state);
                                      
 extern inline uint64_t dx_k_1_next64(dx_k_s_32_state *state);
 
 extern inline double dx_k_1_next_double(dx_k_s_32_state *state);
+
+extern inline uint32_t dx_k_1_fast_next32(dx_k_s_32_state *state);
+
+extern inline uint64_t dx_k_1_fast_next64(dx_k_s_32_state *state);
+
+extern inline double dx_k_1_fast_next_double(dx_k_s_32_state *state);
                                         
 extern inline uint32_t dx_k_2_next32(dx_k_s_32_state *state);
                                      
 extern inline uint64_t dx_k_2_next64(dx_k_s_32_state *state);
 
 extern inline double dx_k_2_next_double(dx_k_s_32_state *state);
+
+extern inline uint32_t dx_k_2_fast_next32(dx_k_s_32_state *state);
+
+extern inline uint64_t dx_k_2_fast_next64(dx_k_s_32_state *state);
+
+extern inline double dx_k_2_fast_next_double(dx_k_s_32_state *state);

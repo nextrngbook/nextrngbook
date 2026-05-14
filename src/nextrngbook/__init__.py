@@ -9,8 +9,12 @@ generation, with plans to introduce additional generators in the future.
 
 **Subpackages:**
 
-- [`dx_generator`](dx_generator.md): Implements the DX algorithm for random 
-number generation.
+- [`dx_generator`](dx_generator.md): Implements the DX algorithm for random number generation.
+    - `DX`: The recommended faster 32-bit DX generator with fixed
+            ``p = 2^31 - 1``.
+    - `DX32`: The general 32-bit DX generator corresponding to the previous
+            ``create_dx()`` API.
+
 """
 
 from . import dx_generator

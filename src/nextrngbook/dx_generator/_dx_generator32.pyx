@@ -2,17 +2,22 @@
 # MIT License
 # Copyright (c) 2025 chintunglin
 
-"""Defines the internal _DXGenerator class for 32-bit DX random number generator.
+"""Defines the internal _DX32Generator and _DXGenerator classes for 32-bit DX random number generators.
 
-Not intended for direct use by end users. Implements the _DXGenerator class,
-which provides the core random number generation mechanism
-based on 32-bit DX parameters.
+Not intended for direct use by end users.
 
-The _DXGenerator objects are instantiated via `dx_generator.create_dx()`, 
-which serves as the public interface.
+_DX32Generator implements the general 32-bit DX generator and is instantiated
+via the public interface `dx_generator.DX32()`.
+
+_DXGenerator implements the faster 32-bit DX generator with fixed
+p = 2^31 - 1 and is instantiated via the public interface `dx_generator.DX()`.
 
 Classes:
-    `_DXGenerator` - A 32-bit DX random number generator.
+    `_DX32Generator` - A general 32-bit DX random number generator that supports
+    DX parameter sets with arbitrary supported modulus p.
+
+    `_DXGenerator` - A faster 32-bit DX random number generator with fixed
+    p = 2^31 - 1 and fast Mersenne modular reduction.
 """
 
 import numpy as np
@@ -22,7 +27,7 @@ from numpy.random cimport BitGenerator, SeedSequence
 from numpy.typing import NDArray
 from typing import Union, Sequence
 
-__all__ = ["_DXGenerator"]
+__all__ = ["_DX32Generator", "_DXGenerator"]
 
 SeedType = Union[None, int, NDArray[np.integer], SeedSequence, Sequence[int]]
 
@@ -30,7 +35,7 @@ np.import_array()
 
 cdef extern from "src/dx_k_s_32.h":
     
-    enum: KK # supported upper limit of kk argument for _DXGenerator
+    enum: KK # supported upper limit of kk argument for _DXGenerator and _DX32Generator
 
     struct s_dx_k_s_32_state:
         uint32_t XX[KK]   # states with at most KK terms
@@ -49,6 +54,13 @@ cdef extern from "src/dx_k_s_32.h":
     uint64_t dx_k_1_next64(dx_k_s_32_state *state) noexcept nogil
     
     double dx_k_1_next_double(dx_k_s_32_state *state) noexcept nogil
+
+    ## dx_k_1_fast
+    uint32_t dx_k_1_fast_next32(dx_k_s_32_state *state) noexcept nogil
+
+    uint64_t dx_k_1_fast_next64(dx_k_s_32_state *state) noexcept nogil
+
+    double dx_k_1_fast_next_double(dx_k_s_32_state *state) noexcept nogil
     
     ## dx_k_2
     uint32_t dx_k_2_next32(dx_k_s_32_state *state) noexcept nogil
@@ -56,6 +68,15 @@ cdef extern from "src/dx_k_s_32.h":
     uint64_t dx_k_2_next64(dx_k_s_32_state *state) noexcept nogil
     
     double dx_k_2_next_double(dx_k_s_32_state *state) noexcept nogil
+
+    ## dx_k_2_fast
+    uint32_t dx_k_2_fast_next32(dx_k_s_32_state *state) noexcept nogil
+    
+    uint64_t dx_k_2_fast_next64(dx_k_s_32_state *state) noexcept nogil
+    
+    double dx_k_2_fast_next_double(dx_k_s_32_state *state) noexcept nogil
+
+    uint32_t MOD_fast(uint64_t z) noexcept nogil
     
 
 # Define functions of required format
@@ -72,6 +93,19 @@ cdef double dx_k_1_double(void *st) noexcept nogil:
 cdef uint64_t dx_k_1_raw(void *st) noexcept nogil:
     return <uint64_t>dx_k_1_next32(<dx_k_s_32_state *> st)
 
+## dx_k_1_fast
+cdef uint32_t dx_k_1_fast_uint32(void *st) noexcept nogil:
+    return dx_k_1_fast_next32(<dx_k_s_32_state *> st)
+
+cdef uint64_t dx_k_1_fast_uint64(void *st) noexcept nogil:
+    return dx_k_1_fast_next64(<dx_k_s_32_state *> st)
+
+cdef double dx_k_1_fast_double(void *st) noexcept nogil:
+    return dx_k_1_fast_next_double(<dx_k_s_32_state *> st)
+
+cdef uint64_t dx_k_1_fast_raw(void *st) noexcept nogil:
+    return <uint64_t>dx_k_1_fast_next32(<dx_k_s_32_state *> st)
+
 ## dx_k_2
 cdef uint32_t dx_k_2_uint32(void *st) noexcept nogil:
     return dx_k_2_next32(<dx_k_s_32_state *> st)
@@ -85,8 +119,21 @@ cdef double dx_k_2_double(void *st) noexcept nogil:
 cdef uint64_t dx_k_2_raw(void *st) noexcept nogil:
     return <uint64_t>dx_k_2_next32(<dx_k_s_32_state *> st)
 
+## dx_k_2_fast
+cdef uint32_t dx_k_2_fast_uint32(void *st) noexcept nogil:
+    return dx_k_2_fast_next32(<dx_k_s_32_state *> st)
 
-cdef class _DXGenerator(BitGenerator):
+cdef uint64_t dx_k_2_fast_uint64(void *st) noexcept nogil:
+    return dx_k_2_fast_next64(<dx_k_s_32_state *> st)
+
+cdef double dx_k_2_fast_double(void *st) noexcept nogil:
+    return dx_k_2_fast_next_double(<dx_k_s_32_state *> st)
+
+cdef uint64_t dx_k_2_fast_raw(void *st) noexcept nogil:
+    return <uint64_t>dx_k_2_fast_next32(<dx_k_s_32_state *> st)
+
+
+cdef class _DX32Generator(BitGenerator):
     """A 32-bit DX random number generator.
     
     The DX family consists of multiple RNGs characterized by different 
@@ -94,10 +141,10 @@ cdef class _DXGenerator(BitGenerator):
     on provided parameters.
 
     Not intended for direct use; instances should be created via 
-    `dx_generator.create_dx()`.    
+    `dx_generator.DX32()`.    
     """
     
-    _ss_support = {1, 2} # supported ss argument for _DXGenerator
+    _ss_support = {1, 2} # supported ss argument for _DX32Generator and _DXGenerator
     
     cdef int __ss
     cdef float _log10_period
@@ -178,7 +225,7 @@ cdef class _DXGenerator(BitGenerator):
             self._bitgen.next_raw = &dx_k_2_raw
     
         else:
-            raise ValueError(f"ss must be in {_DXGenerator._ss_support}.")
+            raise ValueError(f"ss must be in {_DX32Generator._ss_support}.")
 
         self.__ss = value
 
@@ -226,3 +273,49 @@ cdef class _DXGenerator(BitGenerator):
             self._rng_state.XX[i] = XX[i]
             
         self._log10_period = value["state"]["log10_period"]
+
+    
+
+
+cdef class _DXGenerator(_DX32Generator):
+    """A faster 32-bit DX random number generator with fixed p = 2^31 - 1.
+    
+    This class implements the recommended fast DX generator. It is restricted
+    to pp = 2^31 - 1 so that fast Mersenne modular reduction can be used.
+
+    Not intended for direct use; instances should be created via 
+    `dx_generator.DX()`.    
+    """
+
+    cdef int __ss
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if self._rng_state.pp != 2147483647:
+            raise ValueError("This class only supports pp = 2^31 - 1.")
+
+    @property
+    def _ss(self):
+        
+        return self.__ss
+    
+    @_ss.setter
+    def _ss(self, value):
+
+        if value == 1: # dx_k_1
+            self._bitgen.next_uint32 = &dx_k_1_fast_uint32
+            self._bitgen.next_uint64 = &dx_k_1_fast_uint64
+            self._bitgen.next_double = &dx_k_1_fast_double
+            self._bitgen.next_raw = &dx_k_1_fast_raw
+            
+        elif value == 2: #dx_k_2
+            self._bitgen.next_uint32 = &dx_k_2_fast_uint32
+            self._bitgen.next_uint64 = &dx_k_2_fast_uint64
+            self._bitgen.next_double = &dx_k_2_fast_double
+            self._bitgen.next_raw = &dx_k_2_fast_raw
+    
+        else:
+            raise ValueError(f"ss must be in {_DXGenerator._ss_support}.")
+
+        self.__ss = value
