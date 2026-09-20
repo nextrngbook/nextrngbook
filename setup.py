@@ -20,6 +20,18 @@ extensions = [
         ],
         define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")],
     ),
+    Extension(
+        "nextrngbook.safe_dx_pcg64._safe_dx_pcg64",
+        sources=[
+            os.path.join("src", "nextrngbook", "safe_dx_pcg64", "_safe_dx_pcg64.pyx"),
+            os.path.join("src", "nextrngbook", "safe_dx_pcg64", "src", "safe_dx_pcg64_32.c")
+        ],
+        include_dirs=[
+            np.get_include(),
+            os.path.join(os.path.dirname(__file__), "src", "nextrngbook", "safe_dx_pcg64", "src")
+        ],
+        define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")]
+    ),
 ]
 
 setup(

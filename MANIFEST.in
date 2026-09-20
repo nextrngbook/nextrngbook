@@ -1,4 +1,4 @@
 recursive-include src/nextrngbook *.py *.pyx *.pxd *.h *.in *.csv *.md
 recursive-exclude src/nextrngbook *.c
 recursive-include src/nextrngbook/dx_generator/src *.c
-
+recursive-include src/nextrngbook/safe_dx_pcg64/src *.c

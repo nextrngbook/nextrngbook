@@ -1,14 +1,12 @@
-# NextRNGBook: A Python Random Number Generation Package for RNG Book
+# NextRNGBook: A Random Number Generation Package for RNG Book
 
 ## Introduction
 
 The goal of **NextRNGBook** package is to incorporate a variety of high-quality random number 
 generators (RNGs) from 
 *Random Number Generators for Computer Simulation and Cyber Security* [[1]](#references). 
-Designed for seamless compatibility with **NumPy**, 
-this Python package can integrate easily into existing workflows, 
-offering a wide range of selections from state-of-the-art random number generation techniques 
-suitable for scientific computing, large-scale simulations, and cryptographic applications.
+NextRNGBook currently provides a Python package designed for seamless compatibility with **NumPy**, allowing it to integrate easily into existing scientific computing workflows. It offers a range of modern random number generation techniques for scientific computing, large-scale simulations, reinforcement learning and cryptographic applications. In addition to the Python implementation, C and R implementations are planned to provide users with more options across different programming environments.
+
 
 The goal of designing high-quality random number generators is to produce variates 
 that behave like truly random numbers. 
@@ -28,14 +26,20 @@ Combining strong theoretical supports and great practical performance,
 NextRNGBook can help users to explore, evaluate, and 
 apply high-quality RNGs in a modern Python environment.
 
-## Current APIs
+## Current Python Package APIs
 
 NextRNGBook currently provides two DX generator interfaces:
 
 - `DX()`: the recommended fast 32-bit DX generator.
 - `DX32()`: a more general 32-bit DX generator family with broader parameter choices.
 
-Both APIs are compatible with NumPy's `Generator` interface.
+Version 0.3.0 adds three SAFE and eSAFE generator interfaces in `nextrngbook.safe_dx_pcg64`:
+
+- `SAFE_DX_PCG64()`: combines a 32-bit DX generator and PCG64 through mutual shuffling and output transformations, producing one 32-bit output per internal update.
+- `eSAFE_DX_PCG64_M4()`: a multi-output SAFE variant that produces and buffers four 32-bit outputs per internal update.
+- `eSAFE_DX_PCG64_M8()`: a multi-output SAFE variant that produces and buffers eight 32-bit outputs per internal update.
+
+All five APIs provide BitGenerators that work with NumPy's `Generator` for random arrays, sampling, and distributions.
 
 ## Documentation & Distribution
 

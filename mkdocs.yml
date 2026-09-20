@@ -10,12 +10,19 @@ plugins:
   
 nav:
   - Home: index.md
+  - What is New: what_is_new.md
   - Quick Start: 
       - DX generator: dx_quick_start.md
       - DX32 generator: dx32_quick_start.md
+      - SAFE generator: safe_quick_start.md
+      - eSAFE generator: esafe_quick_start.md
   - API Reference:
       - Overview: reference.md
       - dx_generator: dx_generator.md
+      - safe_dx_pcg64: safe_dx_pcg64_generator.md
+  - SAFE Reference:
+      - SAFE generator: safe_generator.md
+  - Evaluation: evaluation.md
   - Explanation: 
       - Team: team_and_contributor.md
   

@@ -23,7 +23,7 @@ Classes:
 import numpy as np
 cimport numpy as np
 from libc.stdint cimport uint32_t, uint64_t
-from numpy.random cimport BitGenerator, SeedSequence
+from numpy.random cimport BitGenerator, SeedSequence, bitgen_t
 from numpy.typing import NDArray
 from typing import Union, Sequence
 
@@ -131,6 +131,25 @@ cdef double dx_k_2_fast_double(void *st) noexcept nogil:
 
 cdef uint64_t dx_k_2_fast_raw(void *st) noexcept nogil:
     return <uint64_t>dx_k_2_fast_next32(<dx_k_s_32_state *> st)
+
+
+cdef object benchmark_dx(bitgen_t *bitgen, object lock, Py_ssize_t cnt, object method):
+    cdef Py_ssize_t i
+
+    if method == "uint64":
+        with lock, nogil:
+            for i in range(cnt):
+                bitgen.next_uint64(bitgen.state)
+    elif method == "uint32":
+        with lock, nogil:
+            for i in range(cnt):
+                bitgen.next_uint32(bitgen.state)
+    elif method == "double":
+        with lock, nogil:
+            for i in range(cnt):
+                bitgen.next_double(bitgen.state)
+    else:
+        raise ValueError("Unknown method")
 
 
 cdef class _DX32Generator(BitGenerator):
@@ -274,7 +293,9 @@ cdef class _DX32Generator(BitGenerator):
             
         self._log10_period = value["state"]["log10_period"]
 
-    
+    def _benchmark(self, Py_ssize_t cnt, method="uint64"):
+        """Used in tests."""
+        return benchmark_dx(&self._bitgen, self.lock, cnt, method)
 
 
 cdef class _DXGenerator(_DX32Generator):

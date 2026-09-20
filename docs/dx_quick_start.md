@@ -8,6 +8,7 @@ To install NextRNGBook, you can use the Python package manager `pip`
 in your terminal or command line interface:
 
 ```bash
+
 pip install nextrngbook
 
 ``` 
