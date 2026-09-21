@@ -1,0 +1,1244 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../safe_dx_pcg64_generator/">
+      
+      
+        <link rel="next" href="../evaluation/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
+    
+    
+      
+        <title>SAFE generator - NextRNGBook Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#safe-and-esafe-generators" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="NextRNGBook Docs" class="md-header__button md-logo" aria-label="NextRNGBook Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NextRNGBook Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SAFE generator
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="NextRNGBook Docs" class="md-nav__button md-logo" aria-label="NextRNGBook Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NextRNGBook Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what_is_new/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is New
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dx_quick_start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DX generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dx32_quick_start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DX32 generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../safe_quick_start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SAFE generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../esafe_quick_start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eSAFE generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dx_generator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dx_generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../safe_dx_pcg64_generator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    safe_dx_pcg64
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SAFE Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SAFE Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SAFE generator
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SAFE generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#safe-generators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SAFE Generators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-construction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General Construction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mutual-shuffling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mutual Shuffling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-mixing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Mixing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generating-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generating Algorithm
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properties
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#esafe-generators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eSAFE Generators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statistical-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Statistical Properties
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#speed-improvement-over-safe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Speed Improvement over SAFE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generator-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generator Notation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        references
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Explanation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Explanation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../team_and_contributor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Team
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#safe-generators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SAFE Generators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-construction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General Construction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mutual-shuffling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mutual Shuffling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-mixing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Mixing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generating-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generating Algorithm
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properties
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#esafe-generators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eSAFE Generators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statistical-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Statistical Properties
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#speed-improvement-over-safe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Speed Improvement over SAFE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generator-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generator Notation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        references
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="safe-and-esafe-generators">SAFE and eSAFE Generators</h1>
+<h2 id="safe-generators">SAFE Generators</h2>
+<p>SAFE stands for <strong>Secure And Fast Encryption</strong>. The construction was proposed by Deng et al. <a href="#references">[1]</a>, and a more detailed treatment is provided in the RNG book <a href="#references">[2]</a>. SAFE is a combined random number generator designed to improve the security-oriented properties of classical generators while retaining their suitability for computer simulation. Classical generators such as multiple recursive generators (MRGs), PCG64, and MT19937 can provide strong theoretical or empirical performance for simulation, but they are not cryptographically secure random number generators by themselves.</p>
+<p>The SAFE construction combines two baseline generators through a mutual-shuffling mechanism and a nonlinear output-mixing function. Instead of exposing the raw output of either generator directly, SAFE allows any two RNGs to be selected as the baseline generators and uses two shuffle tables and transformation functions to produce the final output sequence. </p>
+<!-- Add SAFE construction diagram here. -->
+<p><img alt="SAFE generator construction" src="../images/safe-construction.jpg" /></p>
+<p>Deng et al. [1] recommend using a DX generator and MT19937 as the baseline generators because both have long periods, high-dimensional equidistribution, efficiency, and portability, collectively known as the <a href="../#dx-generators-a-class-of-efficient-mrgs">HELP</a> properties.</p>
+<h2 id="general-construction">General Construction</h2>
+<p>A SAFE generator uses two baseline generators, denoted by <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span>.
+At iteration <span class="arithmatex">\(i\)</span>, the two baseline generators update their internal states
+according to their own generating algorithms and produce the current values
+<span class="arithmatex">\(X_i\)</span> and <span class="arithmatex">\(Y_i\)</span>.</p>
+<p>SAFE also maintains two shuffle tables of the same size:</p>
+<div class="arithmatex">\[
+T_x = (T_{x,0}, T_{x,1}, \ldots, T_{x,2^C-1}), \qquad
+T_y = (T_{y,0}, T_{y,1}, \ldots, T_{y,2^C-1}),
+\]</div>
+<p>where <span class="arithmatex">\(2^C\)</span> is the table size. The entry-index-selection function is</p>
+<div class="arithmatex">\[
+r(z) = z\ \&amp;\ (2^C - 1),
+\]</div>
+<p>where <span class="arithmatex">\(\&amp;\)</span> denotes the bitwise AND operation. Since the table size is a power of two, this function extracts the lower <span class="arithmatex">\(C\)</span> bits of <span class="arithmatex">\(z\)</span> and maps the value to a valid table index.</p>
+<h2 id="mutual-shuffling">Mutual Shuffling</h2>
+<p>After <span class="arithmatex">\(X_i\)</span> and <span class="arithmatex">\(Y_i\)</span> are generated, SAFE extracts intermediate values from the shuffle tables and then updates the selected entries. The table extraction and update are defined as</p>
+<div class="arithmatex">\[
+V_i = T_x[r(Y_i)], \qquad T_x[r(Y_i)] \leftarrow X_i,
+\]</div>
+<p>and</p>
+<div class="arithmatex">\[
+W_i = T_y[r(X_i)], \qquad T_y[r(X_i)] \leftarrow Y_i.
+\]</div>
+<p>Thus, <span class="arithmatex">\(X_i\)</span> is used to update the table associated with <span class="arithmatex">\(Y\)</span>, while <span class="arithmatex">\(Y_i\)</span> is used to update the table associated with <span class="arithmatex">\(X\)</span>. This mutual-shuffling step mixes the two baseline streams and introduces additional intermediate states <span class="arithmatex">\(V_i\)</span> and <span class="arithmatex">\(W_i\)</span>.</p>
+<h2 id="output-mixing">Output Mixing</h2>
+<p>The final output is generated from the internal states <span class="arithmatex">\(X_i, Y_i\)</span> and the intermediate states <span class="arithmatex">\(V_i, W_i\)</span>. In general, the output can be written as</p>
+<div class="arithmatex">\[
+U_i = G(X_i, Y_i; V_i, W_i),
+\]</div>
+<p>where <span class="arithmatex">\(G\)</span> is a nonlinear mixing function.</p>
+<p>A commonly used 32-bit mixing form is</p>
+<div class="arithmatex">\[
+G_{b_x b_y b_v b_w}(x,y;v,w)
+=
+\left(
+    b_x f_1(x)
+    + b_y f_2(y)
+    + b_v f_3(v)
+    + b_w f_4(w)
+\right) \bmod 2^{32},
+\]</div>
+<p>where <span class="arithmatex">\(b_x, b_y, b_v, b_w \in \{0,1\}\)</span>. The functions <span class="arithmatex">\(f_j\)</span> are bit-rotation transformations defined by</p>
+<div class="arithmatex">\[
+f_j(x) = (x \gg r_j) \oplus (x \ll (32-r_j)), \qquad j=1,2,3,4,
+\]</div>
+<p>where <span class="arithmatex">\(r_j\)</span> is the rotation size, <span class="arithmatex">\(\gg\)</span> denotes logical right shift, <span class="arithmatex">\(\ll\)</span> denotes logical left shift, and <span class="arithmatex">\(\oplus\)</span> denotes bitwise XOR. In a 32-bit implementation, the result is interpreted modulo <span class="arithmatex">\(2^{32}\)</span>.</p>
+<p>To balance the number of possible combinations and computational cost, the original SAFE construction recommends using three of the four available transformed values. For example,</p>
+<div class="arithmatex">\[
+U_i = G(X_i, Y_i; V_i, W_i)
+= \left(f_1(X_i) + f_2(Y_i) + f_4(W_i)\right) \bmod 2^{32}.
+\]</div>
+<h2 id="generating-algorithm">Generating Algorithm</h2>
+<p>For each iteration <span class="arithmatex">\(i\)</span>, the SAFE output is generated as follows:</p>
+<ol>
+<li><strong>Internal states:</strong> Compute <span class="arithmatex">\(X_i\)</span> and <span class="arithmatex">\(Y_i\)</span> using the corresponding generating algorithms of the two baseline generators <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span>.</li>
+<li><strong>Intermediate states:</strong> Apply mutual shuffling:<br>
+   compute <span class="arithmatex">\(V_i = T_x[r(Y_i)]\)</span>, then update <span class="arithmatex">\(T_x[r(Y_i)] \leftarrow X_i\)</span>;<br>
+   compute <span class="arithmatex">\(W_i = T_y[r(X_i)]\)</span>, then update <span class="arithmatex">\(T_y[r(X_i)] \leftarrow Y_i\)</span>.</li>
+<li><strong>Output:</strong> Return</li>
+</ol>
+<div class="arithmatex">\[
+U_i = G(X_i, Y_i; V_i, W_i),
+\]</div>
+<p>where <span class="arithmatex">\(G\)</span> is one of the recommended output-mixing functions.</p>
+<h2 id="properties">Properties</h2>
+<p>SAFE is a combination-generator framework. Its behavior depends on the two baseline generators, the shuffle-table size, the table initialization, and the selected output-mixing function.</p>
+<ul>
+<li><strong>Flexible combination of baseline generators:</strong> SAFE can combine any two random number generators as its baseline generators, allowing users to select different generator combinations according to their application requirements. For example, NextRNGBook currently provides a SAFE configuration that combines the DX generator and PCG64.</li>
+<li><strong>Mutual shuffling:</strong> Each generator selects and updates entries containing values from the other generator. This breaks the linear structure of linear generators and reduces the direct correspondence between the baseline sequences and the final output sequence.</li>
+<li><strong>Nonlinear output transformation:</strong> The final output is produced through bit rotations, modular addition, and bitwise operations rather than directly returning <span class="arithmatex">\(X_i\)</span> or <span class="arithmatex">\(Y_i\)</span>.</li>
+<li><strong>Long period from component generators:</strong> If the two baseline generators have periods <span class="arithmatex">\(P_X\)</span> and <span class="arithmatex">\(P_Y\)</span>, the combined period can be as large as <span class="arithmatex">\(\operatorname{lcm}(P_X, P_Y)\)</span> under suitable conditions <a href="#references">[1, 4]</a>. When <span class="arithmatex">\(P_X\)</span> and <span class="arithmatex">\(P_Y\)</span> are relatively prime, this value is <span class="arithmatex">\(P_XP_Y\)</span>.</li>
+<li><strong>Empirical quality:</strong> The SAFE construction is designed to preserve good empirical behavior when the baseline generators and transformation parameters are chosen carefully.</li>
+<li><strong>Flexible construction for parallel workflows:</strong> NextRNGBook provides 14,602 selectable DX generator configurations. Different DX configurations can be used to construct separate streams across parallel workers. The PCG64 component is initialized from the seed, which determines its initial state, LCG increment and multiplier.</li>
+</ul>
+<p>Unlike a DX generator, SAFE is a combination-generator framework rather than a generator defined by a single recurrence. Its properties depend on both baseline generators and the additional shuffling and output-mixing configuration; moreover, the SAFE generator is designed with security in mind.</p>
+<p>The main computational disadvantage is that SAFE advances two baseline generators and performs two table operations for each output value. Because each complete internal update produces only one output value, this computational cost cannot be spread across multiple outputs, and SAFE can therefore be slower than a conventional single-stream generator. This limitation motivates the multi-output eSAFE construction, which attempts to improve throughput while preserving the empirical quality of SAFE.</p>
+<p>For further details, see the SAFE paper, <em>Secure and Fast Encryption (SAFE) with Classical Random Number Generators</em> <a href="#references">[1]</a>. The book <a href="#references">[2]</a> discusses classical secure generators in Chapter 11, software and hardware secure generators in Chapter 12, methods for increasing security in Chapter 13, and SAFE generators in Chapter 14.</p>
+<h2 id="esafe-generators">eSAFE Generators</h2>
+<p>The character e stands for <strong>efficiency</strong>. As discussed above, SAFE advances two baseline generators and updates two shuffle tables during each internal update, but produces only one output value. This makes the computational cost per output relatively high and can limit generation speed. eSAFE was introduced to address this limitation as a multi-output extension of the SAFE construction.</p>
+<p>Instead of producing only one value per internal update, an eSAFE generator generates a block of output values from the same set of current and intermediate values and stores them in an output buffer. Subsequent requests return values from this buffer without performing another complete SAFE update. Once the buffer is exhausted, the generator performs the next internal update and refills the buffer.</p>
+<p>The standard SAFE algorithm produces one output value <span class="arithmatex">\(U_i\)</span> per iteration, whereas an eSAFE generator produces several output values from the same values <span class="arithmatex">\(X_i\)</span>, <span class="arithmatex">\(Y_i\)</span>, <span class="arithmatex">\(V_i\)</span>, and <span class="arithmatex">\(W_i\)</span>. This design reduces the average update cost per returned value. However, the block size must be selected carefully. Producing too many outputs from the same internal values can introduce stronger dependence among outputs and may reduce empirical test performance, depending on the baseline generators and mixing functions.</p>
+<p>For example, a four-output eSAFE variant can be written as</p>
+<div class="arithmatex">\[
+\begin{aligned}
+U_{i,1} &amp;= \left(f_1(X_i) + f_2(Y_i) + f_3(W_i)\right) \bmod 2^{32}, \\
+U_{i,2} &amp;= \left(f_4(X_i) + f_5(Y_i) + f_6(V_i)\right) \bmod 2^{32}, \\
+U_{i,3} &amp;= \left(f_7(X_i) + f_8(V_i) + f_9(W_i)\right) \bmod 2^{32}, \\
+U_{i,4} &amp;= \left(f_{10}(Y_i) + f_{11}(V_i) + f_{12}(W_i)\right) \bmod 2^{32}.
+\end{aligned}
+\]</div>
+<p>Here, <span class="arithmatex">\(f_j\)</span> denotes a bit-rotation transformation with its own rotation size <span class="arithmatex">\(r_j\)</span>. Once the four values are generated, they can be returned one by one. When the buffered outputs are exhausted, the generator performs the next SAFE/eSAFE update to produce a new block of output values.</p>
+<h2 id="statistical-properties">Statistical Properties</h2>
+<p>eSAFE retains the internal state-update, mutual-shuffling, and nonlinear
+output-mixing mechanisms of the <a href="#safe-generators">SAFE generator</a>.
+It therefore inherits the key mathematical and statistical properties of
+the selected SAFE configuration, including period characteristics
+determined by its two baseline generators and the ability to use
+generators with long periods and strong equidistribution.</p>
+<p>eSAFE produces multiple buffered outputs from each SAFE-style update, so
+the buffer size represents a trade-off between speed and possible
+dependence among nearby outputs. In the TestU01 Crush evaluation,
+eSAFE-DX1-PCG64-M8 produced only small proportions of extreme p-values,
+with results comparable to PCG32 and the evaluated DX generators.</p>
+<h2 id="speed-improvement-over-safe">Speed Improvement over SAFE</h2>
+<p>SAFE performs one complete internal update for every output. eSAFE
+generates and buffers multiple outputs per update. This reduces the
+average computation cost per returned value while preserving the core
+<a href="#safe-generators">SAFE construction</a>.</p>
+<p>In the package benchmark, SAFE-DX-PCG64 achieved an overall relative
+throughput of 68.9. eSAFE-DX-PCG64-M4 achieved 101.8, approximately 48%
+faster than SAFE, and eSAFE-DX-PCG64-M8 achieved 113.6, approximately
+65% faster than SAFE. For the complete benchmark and TestU01 results,
+see <a href="../evaluation/">Evaluation of Random Number Generators</a>.</p>
+<h2 id="generator-notation">Generator Notation</h2>
+<p>The generator configurations used in the empirical and performance evaluations are named according to their construction and baseline generators.</p>
+<p>A SAFE generator is denoted by</p>
+<div class="arithmatex">\[
+\text{SAFE-RNGX-RNGY},
+\]</div>
+<p>where <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> identify the first and second baseline generators, respectively. For example, <strong>SAFE-DX-PCG64</strong> denotes a SAFE generator that uses a DX generator and PCG64 as its two baseline generators.</p>
+<p>An eSAFE generator is denoted by</p>
+<div class="arithmatex">\[
+\text{eSAFE-RNGX-RNGY}\text{-M}m,
+\]</div>
+<p>where <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> are the two baseline generators and <span class="arithmatex">\(m\)</span> is the output-buffer size. The suffix <strong>M <span class="arithmatex">\(m\)</span></strong> indicates that each internal eSAFE update produces <span class="arithmatex">\(m\)</span> output values, which are stored in a buffer and returned one by one. For example:</p>
+<ul>
+<li><strong>eSAFE-DX1-PCG64-M4</strong> uses a type-<span class="arithmatex">\(1\)</span> DX generator and PCG64 as its baseline generators and produces four buffered outputs per internal update.</li>
+<li><strong>eSAFE-DX1-PCG64-M8</strong> uses the same baseline-generator combination but produces eight buffered outputs per internal update.</li>
+</ul>
+<p>For empirical TestU01 results and performance comparisons, see
+<a href="../evaluation/">Evaluation of Random Number Generators</a></p>
+<h2 id="references">references</h2>
+<p>[1] Deng, L. Y., Shiau, J. J. H., Lu, H. H. S., &amp; Bowman, D. (2018). 
+<em>Secure and fast encryption (SAFE) with classical random number generators.</em> ACM Transactions on Mathematical Software (TOMS), 44(4), 1-17.</p>
+<p>[2] Deng, L.-Y., Kumar, N., Lu, H. H.-S., &amp; Yang, C.-C. (2025). 
+<em>Random Number Generators for Computer Simulation and Cyber Security:
+Design, Search, Theory, and Application</em> (1st ed.). Springer. 
+<a href="https://doi.org/10.1007/978-3-031-76722-7">https://doi.org/10.1007/978-3-031-76722-7</a></p>
+<p>[3] https://numpy.org/doc/stable/reference/random/performance.html</p>
+<p>[4] Li, C. Y., Chen, Y. H., Chang, T. Y., Deng, L. Y., &amp; To, K. (2011). 
+Period extension and randomness enhancement using high-throughput reseeding-mixing PRNG. IEEE Transactions on Very Large Scale Integration (VLSI) Systems, 20(2), 385-389.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+    
+  </body>
+</html>

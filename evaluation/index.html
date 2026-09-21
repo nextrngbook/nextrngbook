@@ -1,0 +1,1316 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../safe_generator/">
+      
+      
+        <link rel="next" href="../team_and_contributor/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
+    
+    
+      
+        <title>Evaluation - NextRNGBook Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#evaluation-of-random-number-generators" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="NextRNGBook Docs" class="md-header__button md-logo" aria-label="NextRNGBook Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NextRNGBook Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Evaluation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="NextRNGBook Docs" class="md-nav__button md-logo" aria-label="NextRNGBook Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NextRNGBook Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what_is_new/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is New
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dx_quick_start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DX generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dx32_quick_start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DX32 generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../safe_quick_start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SAFE generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../esafe_quick_start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eSAFE generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dx_generator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dx_generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../safe_dx_pcg64_generator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    safe_dx_pcg64
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SAFE Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SAFE Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../safe_generator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SAFE generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview-pcg64-mt19937-dx-safe-and-esafe-generators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview: PCG64, MT19937, DX, SAFE and eSAFE generators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#numpy-generator-speed-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NumPy Generator Speed Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#period-length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Period Length
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parallelization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parallelization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flexibility-and-portability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flexibility and Portability
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#equidistribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Equidistribution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#empirical-test-testu01-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Empirical Test: TestU01 Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        references
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Explanation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Explanation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../team_and_contributor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Team
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview-pcg64-mt19937-dx-safe-and-esafe-generators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview: PCG64, MT19937, DX, SAFE and eSAFE generators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#numpy-generator-speed-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NumPy Generator Speed Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#period-length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Period Length
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parallelization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parallelization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flexibility-and-portability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flexibility and Portability
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#equidistribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Equidistribution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#empirical-test-testu01-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Empirical Test: TestU01 Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        references
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="evaluation-of-random-number-generators">Evaluation of random number generators</h1>
+<h2 id="overview-pcg64-mt19937-dx-safe-and-esafe-generators">Overview: PCG64, MT19937, DX, SAFE and eSAFE generators</h2>
+<p>The generators currently provided in this package include the <strong>DX</strong>, <strong>SAFE</strong>, and <strong>eSAFE</strong> generators. Here we compare them with two widely used generators, <strong>PCG64</strong> and <strong>MT19937</strong>.</p>
+<p>PCG64 is a modern RNG with strong practical performance and fast output generation <a href="../#references">[11]</a>. MT19937 is the classical Mersenne Twister, well known for its long period and extensive use in simulation and scientific computing <a href="../#references">[13]</a>. The DX generator is a family of multiple recursive generators (MRGs) with flexible parameterization, very long periods, and strong equidistribution properties <a href="../#references">[1]</a>. SAFE is a combined-generator framework that uses two baseline generators together with mutual shuffling and output transformation, while eSAFE extends SAFE by producing multiple buffered outputs per internal update to improve generation efficiency.</p>
+<p>The following sections compare these generators in terms of <strong>speed</strong>, <strong>period</strong>, <strong>parallelization</strong>, <strong>flexibility and portability</strong>, <strong>equidistribution</strong>, and <strong>empirical testing with TestU01</strong>.</p>
+<h2 id="numpy-generator-speed-comparison">NumPy Generator Speed Comparison</h2>
+<p>The NumPy Generator benchmark measures relative throughput using
+<strong>MT19937 as the reference generator</strong>, with the MT19937 throughput set
+to 100. For each output type or distribution, each generator produces
+<span class="arithmatex">\(10^6\)</span> random values per repetition. The benchmark is repeated <strong>20
+times</strong>, and the <strong>minimum elapsed time</strong> is used to compute throughput.
+The <strong>overall</strong> column is the geometric mean of the five relative
+throughput indices <a href="#references">[1]</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Generator</th>
+<th style="text-align: right;">UInt32</th>
+<th style="text-align: right;">UInt64</th>
+<th style="text-align: right;">Uniform</th>
+<th style="text-align: right;">Normal</th>
+<th style="text-align: right;">Exp.</th>
+<th style="text-align: right;">Overall</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MT19937</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr>
+<td>PCG64</td>
+<td style="text-align: right;">149.5</td>
+<td style="text-align: right;">160.6</td>
+<td style="text-align: right;">186.0</td>
+<td style="text-align: right;">134.3</td>
+<td style="text-align: right;">155.8</td>
+<td style="text-align: right;">156.3</td>
+</tr>
+<tr>
+<td>DX</td>
+<td style="text-align: right;">94.1</td>
+<td style="text-align: right;">80.8</td>
+<td style="text-align: right;">172.0</td>
+<td style="text-align: right;">70.9</td>
+<td style="text-align: right;">83.7</td>
+<td style="text-align: right;">95.0</td>
+</tr>
+<tr>
+<td>SAFE-DX-PCG64</td>
+<td style="text-align: right;">61.4</td>
+<td style="text-align: right;">44.2</td>
+<td style="text-align: right;">114.0</td>
+<td style="text-align: right;">76.2</td>
+<td style="text-align: right;">65.8</td>
+<td style="text-align: right;">68.9</td>
+</tr>
+<tr>
+<td>eSAFE-DX-PCG64-M4</td>
+<td style="text-align: right;">90.1</td>
+<td style="text-align: right;">78.8</td>
+<td style="text-align: right;">164.0</td>
+<td style="text-align: right;">101.2</td>
+<td style="text-align: right;">92.6</td>
+<td style="text-align: right;">101.8</td>
+</tr>
+<tr>
+<td>eSAFE-DX-PCG64-M8</td>
+<td style="text-align: right;">99.0</td>
+<td style="text-align: right;">89.4</td>
+<td style="text-align: right;">193.0</td>
+<td style="text-align: right;">107.0</td>
+<td style="text-align: right;">103.4</td>
+<td style="text-align: right;">113.6</td>
+</tr>
+</tbody>
+</table>
+<h3 id="interpretation-of-package-rng-performance">Interpretation of Package RNG Performance</h3>
+<p>Among the NextRNGBook generators, DX achieves an overall relative throughput of 95.0. Its uniform generation is fast, although its overall performance is slightly lower than that of MT19937.</p>
+<p>SAFE-DX-PCG64 has the lowest overall performance among the package generators because each output requires two baseline generators, mutual shuffling, and output transformation.</p>
+<p>The buffered eSAFE variants substantially improve the generation speed relative to the original SAFE implementation. eSAFE-DX-PCG64-M4 achieves an overall relative throughput of 101.8, making it approximately 1.8% faster than MT19937. eSAFE-DX-PCG64-M8 reaches 113.6, corresponding to an approximately 13.6% improvement over MT19937.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All timings were taken using Windows 10 on an Intel Core i5-8250 processor.</p>
+</div>
+<h2 id="period-length">Period Length</h2>
+<p>Period length is one of the key properties used to evaluate the quality of a random number generator (RNG). It refers to the number of generated values before the sequence starts repeating itself. In other words, once an RNG returns to the same state and begins producing the same sequence again, the number of generated values in that cycle is called its period. A good RNG should ideally have a sufficiently long period.</p>
+<p>For the well-known PCG64, the generator is based on a 128-bit Linear Congruential Generator (LCG) and outputs 64-bit integers. Its period is <span class="arithmatex">\(2^{128} \approx 10^{38.5}\)</span>. If the period of PCG64 is considered insufficient for a specific application, it can be extended by using the extension array technique <a href="../#references">[1]</a>. However, this extension comes at the cost of additional computation time.</p>
+<p>The DX generator is a class of Multiple Recursive Generators (MRGs), and its period can be expressed as <span class="arithmatex">\(p^{k} - 1\)</span>, where <span class="arithmatex">\(p\)</span> is the modulus and <span class="arithmatex">\(k\)</span> is the order of the recurrence, that is, the number of previous values stored and used to generate the next one <a href="../#references">[3]</a>. In the current package, the largest available DX generator can reach approximately <span class="arithmatex">\(10^{195009.3}\)</span> in period length.</p>
+<p>Unlike PCG64, whose period can be enlarged by using an extension array with additional computational cost, the DX generator can achieve a much longer period simply by increasing the value of <span class="arithmatex">\(k\)</span>. In practice, increasing <span class="arithmatex">\(k\)</span> mainly increases the amount of memory required to store previous states, but does not necessarily lead to a substantial increase in generation time. This gives users a flexible way to choose an appropriate DX generator according to the trade-off between period length and memory usage.</p>
+<p>For SAFE, the period depends on the periods of its two baseline generators. If their periods are <span class="arithmatex">\(P_X\)</span> and <span class="arithmatex">\(P_Y\)</span>, the combined period can be as large as <span class="arithmatex">\(\operatorname{lcm}(P_X,P_Y)\)</span> under suitable conditions <a href="#references">[2, 3]</a>. When the two periods are relatively prime, this becomes <span class="arithmatex">\(P_XP_Y\)</span>. Therefore, the period of SAFE-DX-PCG64 depends on the selected DX configuration together with the period of PCG64.</p>
+<p>The eSAFE generator uses the same baseline-generator combination and SAFE-style internal update while producing multiple buffered outputs from each internal update. Therefore, its period characteristics are also determined primarily by the underlying SAFE construction and its baseline generators.</p>
+<p>Among the individual generators considered here, PCG64 has the shortest period, followed by MT19937 with period <span class="arithmatex">\(2^{19937} - 1 \approx 10^{6001}\)</span> <a href="../#references">[13]</a>, while the DX generator has the longest period overall. SAFE and eSAFE combine the state evolution of their baseline generators, so their period characteristics depend on the selected generator combination rather than on a single fixed period. Therefore, the DX, SAFE, and eSAFE generators provide users with considerable flexibility in selecting configurations with sufficiently long periods for their applications. Moreover, the set of DX generator parameters currently included in the package is not yet exhaustive, and more parameter combinations can be found through further algorithmic search.</p>
+<h2 id="parallelization">Parallelization</h2>
+<p>PCG64 can be used for parallel applications by creating multiple distinct streams.<br />
+In the PCG framework, streams are mainly obtained by changing the <strong>increment</strong> of the underlying LCG <a href="../#references">[17]</a>. According to the PCG discussion, these streams are intended to be <strong>distinct and useful</strong>, but they should not be interpreted as being strictly statistically independent <a href="../#references">[15]</a>.</p>
+<p>In practice, NumPy users usually use <code>spawn()</code> to create multiple PCG64 generators.<br />
+Another option is <strong>jump-ahead</strong>, which moves the state forward by a large number of steps so that different generators start at distant positions in the same cycle.</p>
+<p>For MT19937, jump-ahead can in principle be implemented through repeated multiplication of the transition matrix. In practice, this is not used directly because the matrix is too large. Instead, modern implementations rely on the characteristic polynomial and its corresponding jump polynomial <a href="../#references">[13]</a>. NumPy follows this latter approach. Although effective, this <a href="https://numpy.org/doc/2.2/reference/random/bit_generators/generated/numpy.random.MT19937.jumped.html">method</a> is mathematically and computationally more complicated.</p>
+<p>The DX generator can also be parallelized through jump-ahead in principle <a href="../#references">[1]</a>. 
+However, in the current package, parallelization is achieved by selecting different <strong>dx_id</strong> values, each corresponding to a different RNG.
+Unlike jump-ahead, where generators are taken from different positions of the same cycle, different <code>dx_id</code> values correspond to different cycles. As a result, this approach avoids the risk of overlapping sequences and is also much simpler to implement in practice.</p>
+<p>SAFE provides additional flexibility for parallel workflows because different workers can use different combinations of baseline generators. In NextRNGBook, workers can use different DX parameter configurations and seeds together with PCG64, allowing the SAFE construction to combine different underlying random streams across parallel workers.</p>
+<p>The eSAFE generator uses the same baseline-generator structure as SAFE, so the same approach can also be applied to eSAFE configurations. Different workers can use different DX configurations and seeds while retaining the buffered multi-output construction of eSAFE.</p>
+<p>In parallel settings, PCG64 and MT19937 rely on stream spawning or jump-ahead methods to produce multiple usable substreams. These methods are practical, but they still derive streams within the same generator family. For PCG64 streams, even the PCG discussion notes that such streams are distinct and useful rather than strictly statistically independent. By contrast, DX allows users to select different <code>dx_id</code> values corresponding to different parameter configurations, while SAFE and eSAFE can additionally combine different baseline-generator configurations across workers. This gives the NextRNGBook generators a flexible way to construct multiple random streams for parallel applications.</p>
+<h2 id="flexibility-and-portability">Flexibility and Portability</h2>
+<p>The <a href="https://www.pcg-random.org/using-pcg-c.html">PCG family</a> provides random number generators with multiple output sizes, including 8-, 16-, 32-, and 64-bit variants. For example, PCG64 uses a 128-bit linear congruential generator (LCG) to update its internal state and produces 64-bit random numbers as output.</p>
+<p>From a strict hardware perspective, this does not necessarily mean that the LCG update is performed as a native 128-bit integer operation. Most mainstream processors do not execute a full 128-bit LCG state update as a single scalar integer instruction. Instead, the 128-bit update is usually decomposed into multiple lower-width operations, commonly using 64-bit arithmetic.</p>
+<p>Therefore, PCG64 remains portable across systems, but its performance may depend on how efficiently the compiler and platform implement the required 128-bit arithmetic. Implementations of PCG are available in multiple programming languages. </p>
+<p>MT19937 is a 32-bit random number generator and is one of the default random number generators in <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Random.html">R</a>. A 64-bit variant, MT19937-64 <a href="../#references">[14]</a>, is also available. Because Mersenne Twister has been widely used for many years, stable implementations can be found across different operating systems and programming languages.</p>
+<p>The current version of our DX generator package mainly provides a 32-bit implementation. However, from an algorithmic point of view, the DX generator can also be extended to 64-bit and 128-bit versions<a href="../#references">[16]</a>. This gives it the potential to be applied across different operating systems and programming languages as well.</p>
+<p>In addition to output-width flexibility, the DX generator allows users to select different parameter configurations through <code>dx_id</code>. Each configuration corresponds to a different set of DX parameters, allowing users to choose among different generators according to their application requirements.</p>
+<p>SAFE provides another form of flexibility because its construction can combine any two random number generators as its baseline generators. Users can therefore select different RNG combinations according to their application requirements rather than being restricted to a fixed pair of generators. For example, NextRNGBook currently provides SAFE and eSAFE configurations based on the DX generator and PCG64. The flexibility of the DX parameter configurations can also be retained within these combined generators by selecting different DX configurations.</p>
+<h2 id="equidistribution">Equidistribution</h2>
+<p>Equidistribution describes whether an RNG can provide different possible outputs with nearly equal frequency over a long sequence.
+If an RNG has this property, then in sufficiently many generated values, different outcomes will appear with approximately the same frequency.  </p>
+<h3 id="definition">Definition</h3>
+<p>Suppose an RNG generates the sequence <span class="arithmatex">\(X_{-k}, \dots, X_{-1}, X_{0}, X_{1}, \dots\)</span> where <span class="arithmatex">\(X_{i} \in \mathbb{Z}_{p}\)</span>, and
+let its period be <span class="arithmatex">\(r\)</span>. The RNG is said to be equidistributed in t dimensions, if the following property holds true for every <span class="arithmatex">\(1 \leq d \leq t\)</span>: Consider all <span class="arithmatex">\(r\)</span> possible distinct <span class="arithmatex">\(d\)</span>-tuples of successive elements from <span class="arithmatex">\(i\)</span>, i.e., <span class="arithmatex">\((X_{i}, \dots, X_{i+d-1}), (X_{i+1}, \dots, X_{i+d}), \dots, (X_{i+r-1}, \dots, X_{i+r+d-2}).\)</span>
+Then, amongst them all the possible <span class="arithmatex">\(P^{t}\)</span> tuples will occur with almost equal frequency. <a href="../#references">[1]</a></p>
+<p>The equidistribution property of PCG64 is not explicitly stated on its official website, and the upper limit depends on the specific construction being used. For the PCG64 currently provided in NumPy, whose period is <span class="arithmatex">\(2^{128}\)</span>, the theoretical upper bound implied by the definition of equidistribution is <span class="arithmatex">\(4\)</span>. As mentioned earlier, the extension array technique can be used to increase the equidistribution dimension.</p>
+<p>MT19937 is 623-dimensionally equidistributed at 32-bit accuracy <a href="../#references">[13]</a>.
+For the DX generator, the equidistribution dimension is determined by the order <span class="arithmatex">\(k\)</span> of the underlying MRG. <a href="../#references">[3]</a></p>
+<p>High-dimensional equidistribution is also considered in the design of SAFE. By combining baseline generators with strong statistical properties, such as a high-dimensional DX generator, SAFE is designed to retain the favorable properties of its components while adding mutual shuffling and output transformations. <a href="#references">[2]</a></p>
+<p>eSAFE uses the same baseline-generator construction as SAFE but produces multiple buffered outputs per internal update. It therefore retains the advantage of selecting generators with strong equidistribution properties.</p>
+<p>Based on the discussion above, PCG64 has the lowest equidistribution dimension among the three individual generators, followed by MT19937. For the parameter sets currently provided in this package, the DX generator can achieve the upper limit of 20897-dimensional equidistribution. This indicates that, in terms of high-dimensional equidistribution, the DX generator performs best among the three individual RNGs.</p>
+<h2 id="empirical-test-testu01-results">Empirical Test: TestU01 Results</h2>
+<p>TestU01 <a href="../#references">[9]</a> is a widely used empirical test suite for random number generators, designed to detect statistical bias, correlation, and other structural defects in generated sequences. In this empirical comparison, we use <strong>PCG32</strong> instead of <strong>PCG64</strong> so that all generators are evaluated on the same 32-bit output basis. This makes the comparison with <strong>MT19937</strong>, <strong>DX-k-1</strong>, <strong>DX-k-2</strong> and <strong>eSAFE-DX1-PCG64-M8</strong> more consistent and fair.</p>
+<p>For the DX generators, the notation <strong>DX-k-1</strong> and <strong>DX-k-2</strong> is used in the empirical evaluation. Here, <span class="arithmatex">\(k\)</span> denotes the recurrence order of the DX generator, while the final number denotes the DX generator type <span class="arithmatex">\(s\)</span>. Therefore, <strong>DX-k-1</strong> represents a DX generator with recurrence order <span class="arithmatex">\(k\)</span> and type <span class="arithmatex">\(s=1\)</span>, whereas <strong>DX-k-2</strong> represents a DX generator with recurrence order <span class="arithmatex">\(k\)</span> and type <span class="arithmatex">\(s=2\)</span>.</p>
+<p>When the recurrence order is not explicitly included in a combined-generator name, <strong>DX1</strong> and <strong>DX2</strong> denote DX generators of type <span class="arithmatex">\(s=1\)</span> and <span class="arithmatex">\(s=2\)</span>, respectively. The exact recurrence order and parameter configuration are determined by the corresponding evaluation setup.</p>
+<p>For <strong>PCG32</strong> and <strong>MT19937</strong>, we used seeds from 1234 to 1258, resulting in 25 independent Crush runs for each generator. Since the Crush battery reports 144 test statistics, each of these generators produced <span class="arithmatex">\(144 \times 25\)</span> p-values in total.</p>
+<p>For <strong>DX-k-1</strong> and <strong>DX-k-2</strong>, we also performed 25 Crush runs for each generator class. These two classes correspond to the two recurrence structures of the DX generator family described in the <a href="../#dx-generators-a-class-of-efficient-mrgs">DX generator section</a>. In each class, we selected 25 different values of <span class="arithmatex">\(k\)</span>, each paired with a corresponding multiplier <span class="arithmatex">\(B\)</span>. The detailed parameter settings are listed below.</p>
+<p>For <strong>eSAFE-DX1-PCG64-M8</strong>, we performed 25 Crush runs using the same 25
+DX-k-1 parameter configurations described above.</p>
+<p>To summarize the empirical results, we recorded the proportions of p-values falling into several extreme ranges. An RNG is considered to perform well if these observed proportions are close to the theoretical proportions expected under a uniform distribution.</p>
+<table>
+<thead>
+<tr>
+<th>p-value</th>
+<th style="text-align: right;"><span class="arithmatex">\(&lt;10^{-4}\)</span></th>
+<th style="text-align: right;"><span class="arithmatex">\(&lt;10^{-3}\)</span></th>
+<th style="text-align: right;"><span class="arithmatex">\(&gt;1-10^{-3}\)</span></th>
+<th style="text-align: right;"><span class="arithmatex">\(&gt;1-10^{-4}\)</span></th>
+<th style="text-align: right;"><span class="arithmatex">\(&gt;1-10^{-15}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PCG32</strong></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>Proportion</td>
+<td style="text-align: right;">0.000278</td>
+<td style="text-align: right;">0.000556</td>
+<td style="text-align: right;">0.001111</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><strong>MT19937</strong></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>Proportion</td>
+<td style="text-align: right;">0.000278</td>
+<td style="text-align: right;">0.001389</td>
+<td style="text-align: right;">0.014722</td>
+<td style="text-align: right;">0.013889</td>
+<td style="text-align: right;">0.013889</td>
+</tr>
+<tr>
+<td><strong>DX-k-1</strong></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>Proportion</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.002222</td>
+<td style="text-align: right;">0.000556</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><strong>DX-k-2</strong></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>Proportion</td>
+<td style="text-align: right;">0.000278</td>
+<td style="text-align: right;">0.001111</td>
+<td style="text-align: right;">0.000556</td>
+<td style="text-align: right;">0.000278</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><strong>eSAFE-DX1-PCG64-M8</strong></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>Proportion</td>
+<td style="text-align: right;">0.000000</td>
+<td style="text-align: right;">0.001111</td>
+<td style="text-align: right;">0.001111</td>
+<td style="text-align: right;">0.000278</td>
+<td style="text-align: right;">0.000000</td>
+</tr>
+</tbody>
+</table>
+<p>The detailed <span class="arithmatex">\((k, B)\)</span> pairs used for <strong>DX-k-1</strong> and <strong>DX-k-2</strong> are listed below. Since DX generators with <span class="arithmatex">\(k=2\)</span> showed relatively poor performance in the Crush tests, they are currently excluded from the provided parameter set.</p>
+<details class="info">
+<summary>Parameter settings used in the Crush tests</summary>
+<p><strong>DX-k-1</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>(3, 523793), (4, 1048274), (5, 524251), (20, 1045152), (21, 1045311),
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>(22, 523411), (23, 1046670), (24, 521749), (26, 1044443), (27, 523797),
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>(30, 1043894), (34, 524043), (39, 522706), (42, 1044205), (47, 2096778),
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>(48, 1040215), (51, 521799), (52, 523729), (60, 1037046), (102, 1042679),
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>(120, 1028648), (643, 4178499), (1597, 918398), (7499, 876798), (20897, 900942)
+</span></code></pre></div>
+<p><strong>DX-k-2</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>(3, 524055), (4, 1048421), (5, 523992), (20, 1044873), (21, 1045412),
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>(22, 522821), (23, 1046205), (24, 522948), (26, 1044091), (27, 520325),
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>(30, 519311), (34, 1044586), (39, 1044247), (42, 521662), (47, 99565),
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>(48, 1044752), (51, 519906), (52, 1047593), (60, 519980), (102, 1037411),
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>(120, 522191), (643, 201330), (1597, 893161), (7499, 768842), (20897, 1028880)
+</span></code></pre></div>
+</details>
+<h4 id="interpretation-of-the-testu01-results">Interpretation of the TestU01 Results</h4>
+<p>When a generator behaves like an ideal uniform random number generator, its p-values should approximately follow the uniform distribution over <span class="arithmatex">\((0,1)\)</span>. Therefore, the observed proportions of p-values in the specified ranges can be compared with their expected proportions.</p>
+<p>A very small p-value indicates a more significant test result and may suggest that the generator performs poorly in that test. A p-value extremely close to <span class="arithmatex">\(1\)</span> is also undesirable because the result may appear too regular to be truly random. The table reports the proportions of p-values near these two extremes. In general, proportions closer to their expected values indicate better empirical behavior.</p>
+<p>DX-k-1, DX-k-2, eSAFE-DX1-PCG64-M8, and PCG32 produce only small proportions of p-values near <span class="arithmatex">\(0\)</span> or <span class="arithmatex">\(1\)</span>. Their proportions around the <span class="arithmatex">\(10^{-3}\)</span> threshold are generally close to the expected value of <span class="arithmatex">\(0.001\)</span>, and they produce few or no p-values beyond the more extreme thresholds.</p>
+<p>In contrast, MT19937 produces a much larger proportion of p-values close to <span class="arithmatex">\(1\)</span>. In particular, the proportion above <span class="arithmatex">\(1-10^{-15}\)</span> is <span class="arithmatex">\(0.013889\)</span>, which is much larger than the expected value. Therefore, MT19937 shows poorer empirical behavior than the other generators in this evaluation.</p>
+<h2 id="summary">Summary</h2>
+<p>The benchmark results show that the DX generator delivers performance close to MT19937, with overall relative-throughput scores of 95.0 and 100.0, respectively. SAFE-DX-PCG64 is substantially slower because each output requires advancing two baseline generators, performing mutual shuffling, and applying the output-mixing transformation. eSAFE reduces this average cost by producing and buffering multiple outputs during each internal update. The results also demonstrate that the number of buffered outputs affects performance: eSAFE-DX-PCG64-M8 achieves an overall score of 113.6, compared with 101.8 for eSAFE-DX-PCG64-M4. Thus, in this benchmark, both eSAFE variants outperform MT19937 in terms of overall throughput, while the eight-output configuration is faster than the four-output configuration.</p>
+<p>PCG64 remains the fastest generator in this benchmark, with an overall relative-throughput score of 156.3. However, speed should not be the only criterion used to select a random number generator. NumPy's PCG64 has a maximal period of <span class="arithmatex">\(2^{128}\)</span>, whereas maximal-period DX generators can provide substantially longer periods depending on the modulus and recurrence order, together with an explicit high-dimensional equidistribution guarantee. DX also provides flexibility through different parameter configurations, while SAFE and eSAFE can combine different baseline generators and retain the favorable properties of the selected components. Deng et al. <a href="#references">[2]</a> recommend DX and MT19937 for their HELP properties, but the SAFE construction also supports other RNG combinations, such as DX and PCG64 used here. These features also provide additional flexibility for constructing random streams in parallel applications.</p>
+<p>The TestU01 results further show that PCG32, DX-k-1, DX-k-2, and eSAFE-DX1-PCG64-M8 produce only small proportions of extreme p-values in this evaluation, while MT19937 produces a noticeably larger proportion of p-values close to <span class="arithmatex">\(1\)</span>. Overall, the results indicate that generator selection should consider not only generation speed, but also period length, equidistribution, empirical statistical performance, flexibility, portability, and behavior in parallel environments.</p>
+<h2 id="references">references</h2>
+<p>[1] https://numpy.org/doc/stable/reference/random/performance.html</p>
+<p>[2] Deng, L. Y., Shiau, J. J. H., Lu, H. H. S., &amp; Bowman, D. (2018). 
+<em>Secure and fast encryption (SAFE) with classical random number generators.</em> ACM Transactions on Mathematical Software (TOMS), 44(4), 1-17.</p>
+<p>[3] Li, C. Y., Chen, Y. H., Chang, T. Y., Deng, L. Y., &amp; To, K. (2011). 
+Period extension and randomness enhancement using high-throughput reseeding-mixing PRNG. IEEE Transactions on Very Large Scale Integration (VLSI) Systems, 20(2), 385-389.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+    
+  </body>
+</html>
