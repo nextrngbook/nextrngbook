@@ -2,7 +2,7 @@
 
 ## Version 0.3.0
 
-## SAFE and eSAFE Generators
+### SAFE and eSAFE Generators
 
 NextRNGBook now adds NumPy-compatible SAFE and eSAFE generator interfaces based on the SAFE construction. The new [`SAFE_DX_PCG64`](safe_dx_pcg64_generator.md#safe_dx_pcg64seed-randomize) generator combines a 32-bit DX generator and PCG64 through mutual shuffling and nonlinear output transformations. It produces one output value per internal SAFE update.
 
@@ -26,7 +26,8 @@ However, this restriction does not reduce the number of distinct DX generators a
 Users who do not want to use DX generators with fixed $p = 2^{31} - 1$ can instead use [`DX32`](dx_generator.md#dx32dx_id-seed).
 
 For generating $U(0,1)$ random numbers, [`DX`](dx_generator.md#dxdx_id-seed) is also slightly faster than MT19937 in our benchmark results. 
-The tables below compare the generation speed of different RNGs.
+For generation-speed comparisons, see the
+[NumPy Generator Speed Comparison](evaluation.md#numpy-generator-speed-comparison).
 
 For large-scale parallel computing, the DX generator provides a large number of distinct parameter sets. 
 Different **dx_id** values in [`DX`](dx_generator.md#dxdx_id-seed) correspond to distinct parameterized generators rather than jumped positions within a single cycle. 

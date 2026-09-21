@@ -114,7 +114,7 @@ High-dimensional equidistribution is also considered in the design of SAFE. By c
 
 eSAFE uses the same baseline-generator construction as SAFE but produces multiple buffered outputs per internal update. It therefore retains the advantage of selecting generators with strong equidistribution properties.
 
-Based on the discussion above, PCG64 has the lowest equidistribution dimension among the three individual generators, followed by MT19937. For the parameter sets currently provided in this package, the DX generator can achieve the upper limit of 20897-dimensional equidistribution. This indicates that, in terms of high-dimensional equidistribution, the DX generator performs best among the three individaul RNGs.
+Based on the discussion above, PCG64 has the lowest equidistribution dimension among the three individual generators, followed by MT19937. For the parameter sets currently provided in this package, the DX generator can achieve the upper limit of 20897-dimensional equidistribution. This indicates that, in terms of high-dimensional equidistribution, the DX generator performs best among the three individual RNGs.
 
 
 ## Empirical Test: TestU01 Results

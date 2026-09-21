@@ -31,7 +31,7 @@ apply high-quality RNGs in a modern Python environment.
 
 - Added the SAFE generator [``SAFE_DX_PCG64``](safe_dx_pcg64_generator.md#safe_dx_pcg64seed-randomize), which combines the DX generator with PCG64, as well as the more efficient [``eSAFE_DX_PCG64_M4``](safe_dx_pcg64_generator.md#esafe_dx_pcg64_m4seed-randomize) and [``eSAFE_DX_PCG64_M8``](safe_dx_pcg64_generator.md#esafe_dx_pcg64_m8seed-randomize)
 
-- Renamed ``create_dx`` to [``DX``](dx_generator.md#dxdx_id-seed), and added [``DX32``](dx_generator.md#dx32dx_id-seed) as a faster version of the DX generator.
+- Renamed ``create_dx`` to [``DX32``](dx_generator.md#dx32dx_id-seed), and added [``DX``](dx_generator.md#dxdx_id-seed) as a faster version of the DX generator.
 
 See [What is New](what_is_new.md) for more details.
 
@@ -393,7 +393,6 @@ from 32-bit to 64-bit for various RNGs later (e.g. DX-64).
 **Secure RNGs** will be introduced, 
 designed for cryptographic and security-critical applications, such as:
 
-- **SAFE (Secure And Fast Encryption)**: with mutual shuffle on two RNGs.
 - **eRC**: enhancement on RC4  8bit stream cipher.
 - **eHC**: enhancement on HC-256 and HC128 stream ciphers.
 - **eChaCha**: enhancement on ChaCha/Salsa stream ciphers.

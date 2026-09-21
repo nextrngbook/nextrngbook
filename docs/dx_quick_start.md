@@ -50,7 +50,7 @@ _DXGenerator(bb=24184, pp=2147483647, kk=47, ss=2, log10_period=438.600006103515
 ```python
 
 >>> DX(dx_id=10000, seed=308)
-_DXGenerator(bb=646323, pp=2147483647, kk=47, ss=2, log10_period=438.6000061035156)
+_DXGenerator(bb=681883, pp=2147483647, kk=47, ss=2, log10_period=438.6000061035156)
 
 ```
 
@@ -72,7 +72,7 @@ print(rng)
 ``` 
 
     DX-47-2 generator
-    Multiplier = 646173
+    Multiplier = 681651
     Modulus    = 2147483647
     The log₁₀(period) of the PRNG is 438.6
 
@@ -143,7 +143,7 @@ from nextrngbook.dx_generator import DX
 from numpy.random import Generator
 
 # Create multiple DX generators with different dx_id values
-generators = [Generator(DX(dx_id=i)) for i in range(14760, 14769)]
+generators = [Generator(DX(dx_id=i)) for i in range(14590, 14599)]
 
 ``` 
 

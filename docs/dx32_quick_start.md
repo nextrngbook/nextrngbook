@@ -138,7 +138,7 @@ reducing dependencies between random sequences in parallel processes.
 from nextrngbook.dx_generator import DX32
 from numpy.random import Generator
 
-# creat multiple DX32 generators with different dx_id values
+# create multiple DX32 generators with different dx_id values
 generators = [Generator(DX32(dx_id=i)) for i in range(4100, 4108)]
 
 ```
